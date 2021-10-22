@@ -53,6 +53,6 @@
     "wait-on": "6.0.0"
   },
   "resolutions": {
-    "graphql": "15.4.0-experimental-stream-defer.1"
+    "graphql": "16.0.0-rc.2.experimental-stream-defer.3"
   }
 }

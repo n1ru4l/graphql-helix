@@ -4673,10 +4673,10 @@ graphql-ws@^4.3.2:
   resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-4.9.0.tgz#5cfd8bb490b35e86583d8322f5d5d099c26e365c"
   integrity sha512-sHkK9+lUm20/BGawNEWNtVAeJzhZeBg21VmvmLoT5NdGVeZWv5PdIhkcayQIAgjSyyQ17WMKmbDijIPG2On+Ag==
 
-graphql@15.4.0-experimental-stream-defer.1, graphql@15.6.0, graphql@^15.3.0:
-  version "15.4.0-experimental-stream-defer.1"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.4.0-experimental-stream-defer.1.tgz#46ae3fd2b532284575e7ddcf6c4f08aa7fe53fa3"
-  integrity sha512-zlGgY7aLlIofjO0CfTpCYK/tMccnj+5jvjnkTnW5qOxYhgEltuCvpMNYOJ67gz6L1flTIigt5BVEM8JExgtW3w==
+graphql@16.0.0-rc.2.experimental-stream-defer.3, graphql@15.6.0, graphql@16.0.0-rc.2.experimental-stream-defer.3, graphql@^15.3.0:
+  version "16.0.0-rc.2.experimental-stream-defer.3"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.0.0-rc.2.experimental-stream-defer.3.tgz#3487d10c42eae8fff6b2a9f0d3fb8b59a7695f9f"
+  integrity sha512-++JcxPCvCvlKvH4AniHbZzC4JmflOrPYUp2M/OEr+QgiESqSDBLiaxR/TuoTm8kyC3s7dqyr8NZqF36SqPFFDg==
 
 hard-rejection@^2.1.0:
   version "2.1.0"
