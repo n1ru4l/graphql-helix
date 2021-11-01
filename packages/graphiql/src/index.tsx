@@ -1,6 +1,5 @@
-import { isLiveQueryOperationDefinitionNode } from "@n1ru4l/graphql-live-query";
 import copyToClipboard from "copy-to-clipboard";
-import { DocumentNode, Kind, parse, getOperationAST } from "graphql";
+import { DocumentNode, Kind, parse } from "graphql";
 import GraphiQL, { Fetcher } from "graphiql";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -32,11 +31,7 @@ export interface Options {
 const getOperationWithFragments = (
   document: DocumentNode,
   operationName: string
-): {
-  document: DocumentNode;
-  isSubscriber: boolean;
-} => {
-  let isSubscriber = false;
+): DocumentNode => {
   const definitions = document.definitions.filter((definition) => {
     if (definition.kind === Kind.OPERATION_DEFINITION) {
       if (operationName) {
@@ -44,18 +39,12 @@ const getOperationWithFragments = (
           return false;
         }
       }
-      if (definition.operation === "subscription" || isLiveQueryOperationDefinitionNode(definition)) {
-        isSubscriber = true;
-      }
     }
     return true;
   });
   return {
-    document: {
-      kind: Kind.DOCUMENT,
-      definitions,
-    },
-    isSubscriber,
+    kind: Kind.DOCUMENT,
+    definitions,
   };
 };
 
@@ -126,7 +115,7 @@ export const init = async ({
 
       const [hybridTransportIndex, setHybridTransportIndex] = React.useState(startHybridIndex);
 
-      const options = React.useMemo(() => {
+      const fetcher: Fetcher = React.useMemo(() => {
         const options: LoadFromUrlOptions = {
           subscriptionsProtocol: subscriptionsEndpoint?.startsWith("ws")
             ? useWebSocketLegacyProtocol
@@ -153,7 +142,21 @@ export const init = async ({
           }
         }
 
-        return options;
+        const executor$ = urlLoader.getExecutorAsync(endpoint, options);
+        return async (graphQLParams, opts) => {
+          const document = getOperationWithFragments(parse(graphQLParams.query), graphQLParams.operationName);
+
+          const executor = await executor$;
+
+          return executor({
+            document,
+            operationName: graphQLParams.operationName,
+            variables: graphQLParams.variables,
+            extensions: {
+              headers: opts?.headers,
+            }
+          }) as ReturnType<Fetcher>;
+        };
       }, [hybridTransportIndex]);
 
       const onShare = () => {
@@ -168,29 +171,6 @@ export const init = async ({
           })
         );
       };
-
-      const fetcher = React.useMemo<null | Fetcher>(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const fetcher: Fetcher = async (graphQLParams, opts) => {
-          const { document } = getOperationWithFragments(parse(graphQLParams.query), graphQLParams.operationName);
-
-          const executor = await urlLoader.getExecutorAsync(endpoint, {
-            ...options,
-            headers: opts?.headers,
-          });
-
-          const operation = getOperationAST(document, graphQLParams.operationName);
-
-          return executor({
-            document,
-            operationType: operation!.operation,
-            variables: graphQLParams.variables,
-          });
-        };
-
-        return fetcher;
-      }, [options]);
 
       return fetcher ? (
         <GraphiQL

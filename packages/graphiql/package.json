@@ -14,12 +14,10 @@
     "build": "node build.js"
   },
   "dependencies": {
-    "@graphql-tools/url-loader": "7.3.0",
-    "@graphql-tools/utils": "8.4.0",
-    "@n1ru4l/graphql-live-query": "0.8.1",
+    "@graphql-tools/url-loader": "7.4.2",
     "copy-to-clipboard": "3.3.1",
     "graphiql": "1.4.2",
-    "graphql": "15.6.0",
+    "graphql": "16.0.0-rc.2.experimental-stream-defer.3",
     "graphql-language-service-interface": "2.8.4",
     "react": "17.0.2",
     "react-dom": "17.0.2"
